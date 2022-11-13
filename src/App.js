@@ -1,16 +1,39 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase/Firebase_config";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  getAuth,
+  signOut,
+} from "firebase/auth";
 
 function App() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [userdata, setUserdata] = useState("");
 
   const register = async () => {
     await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
       .then((data) => {
         console.log(data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const Login = async () => {
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((data) => {
+        setUserdata(data.user.email);
+        console.log(data);
+        console.log(data.user.email);
+        console.log(typeof data.user.email);
       })
       .catch((error) => {
         console.log(error.message);
@@ -30,20 +53,35 @@ function App() {
 
   return (
     <div>
-      <h1>로그인</h1>
+      <h1>회원가입</h1>
       <input
-        placeholder="Email"
+        placeholder='Email'
         onChange={(event) => {
           setRegisterEmail(event.target.value);
         }}
       />
       <input
-        placeholder="Password"
+        placeholder='Password'
         onChange={(event) => {
           setRegisterPassword(event.target.value);
         }}
       />
       <button onClick={register}>Sign Up</button>
+      <h1>로그인</h1>
+      <input
+        placeholder='Email'
+        onChange={(event) => {
+          setEmail(event.target.value);
+        }}
+      />
+      <input
+        placeholder='Password'
+        onChange={(event) => {
+          setPassword(event.target.value);
+        }}
+      />
+      <button onClick={Login}>Login</button>
+      <div>{userdata ? `${userdata}` : null}</div>
       <div>
         <h1>구글 로그인</h1>
         <button onClick={GoogleLogin}>Google</button>
