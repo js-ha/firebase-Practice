@@ -5,7 +5,6 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
-  getAuth,
   signOut,
 } from "firebase/auth";
 
@@ -32,8 +31,8 @@ function App() {
       .then((data) => {
         setUserdata(data.user.email);
         console.log(data);
-        console.log(data.user.email);
-        console.log(typeof data.user.email);
+        // console.log(data.user.email);
+        // console.log(typeof data.user.email);
       })
       .catch((error) => {
         console.log(error.message);
@@ -51,6 +50,17 @@ function App() {
       });
   };
 
+  const Logout = async () => {
+    signOut(auth)
+      .then(() => {
+        console.log("로그아웃 성공");
+        console.log(auth);
+      })
+      .catch((error) => {
+        console.log("로그아웃 실패");
+        console.log(error.message);
+      });
+  };
   return (
     <div>
       <h1>회원가입</h1>
@@ -85,6 +95,10 @@ function App() {
       <div>
         <h1>구글 로그인</h1>
         <button onClick={GoogleLogin}>Google</button>
+      </div>
+      <div>
+        <h1>로그아웃</h1>
+        <button onClick={Logout}>Logout</button>
       </div>
     </div>
   );
