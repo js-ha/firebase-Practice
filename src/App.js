@@ -15,6 +15,7 @@ function App() {
   const [password, setPassword] = useState("");
 
   const [userdata, setUserdata] = useState("");
+  const [goodata, setGoodata] = useState("");
 
   const register = async () => {
     await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
@@ -43,6 +44,7 @@ function App() {
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider)
       .then((data) => {
+        setGoodata(data.user.displayName);
         console.log(data);
       })
       .catch((error) => {
@@ -95,6 +97,7 @@ function App() {
       <div>
         <h1>구글 로그인</h1>
         <button onClick={GoogleLogin}>Google</button>
+        <div>{goodata ? `${goodata}` : null}</div>
       </div>
       <div>
         <h1>로그아웃</h1>
